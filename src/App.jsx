@@ -1,28 +1,59 @@
-import React from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import TechStack from './components/TechStack';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import './App.css';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import gsap from "gsap";
+import Header from "./components/Header";
+import HeroSection from "./components/HeroSection";
+import ProjectsSection from "./components/ProjectsSection";
+import SkillsSection from "./components/SkillsSection";
+import AboutSection from "./components/AboutSection";
+import ContactSection from "./components/ContactSection";
+import Footer from "./components/Footer";
 
 function App() {
+  useEffect(() => {
+    // GSAP animation for scroll-triggered effects
+    gsap.registerPlugin();
+
+    // Animate sections on scroll
+    const sections = document.querySelectorAll("section");
+    sections.forEach((section) => {
+      gsap.from(section, {
+        opacity: 0.5,
+        y: 30,
+        duration: 1,
+        scrollTrigger: {
+          trigger: section,
+          start: "top 80%",
+          end: "top 20%",
+          scrub: false,
+        },
+      });
+    });
+  }, []);
+
   return (
-    <div className="relative flex min-h-screen w-full flex-col dark group/design-root bg-background-dark font-display overflow-x-hidden">
-      <div className="layout-container flex h-full grow flex-col">
-        <div className="flex flex-1 justify-center py-5">
-          <div className="layout-content-container flex w-full max-w-5xl flex-col gap-12">
-            <Header />
-            <main className="flex flex-col gap-20 md:gap-28 px-4">
-              <Hero />
-              <TechStack />
-              <Projects />
-              <Contact />
-            </main>
-            <Footer />
+    <div className="dark">
+      <div className="relative flex min-h-screen w-full flex-col bg-background-dark text-[#E0E0E0]">
+        <div className="layout-container flex h-full grow flex-col">
+          <div className="px-4 sm:px-10 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
+            <div className="layout-content-container flex flex-col max-w-11/12 flex-1 w-full">
+              <Header />
+
+              <main className="flex flex-col gap-16 md:gap-24">
+                <HeroSection />
+                <ProjectsSection />
+                <SkillsSection />
+                <AboutSection />
+                <ContactSection />
+              </main>
+
+              <Footer />
+            </div>
           </div>
         </div>
+
+        {/* Todo List Widget */}
+        {/* <TodoList /> */}
       </div>
     </div>
   );
