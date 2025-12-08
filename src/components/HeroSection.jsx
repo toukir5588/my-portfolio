@@ -4,26 +4,59 @@ import gsap from "gsap";
 
 export default function HeroSection() {
   const [displayText, setDisplayText] = useState("");
+  // কনস্ট্যান্টগুলি
   const fullText = "Hi, I'm Toukir Ahammed";
-  const subtitleText = "a FrontEnd Developer";
+  const typingSpeed = 50; // টাইপিং এর গতি
+  const deletingSpeed = 30; // মোছার গতি
+  const delayAfterTyping = 1500; // টাইপ শেষে অপেক্ষা
 
+  // --- ইনফিনিটি টাইপিং অ্যানিমেশনের জন্য সংশোধিত useEffect ---
   useEffect(() => {
-    // Typing animation for main heading
     let index = 0;
-    const timer = setInterval(() => {
-      if (index < fullText.length) {
-        setDisplayText(fullText.slice(0, index + 1));
-        index++;
-      } else {
-        clearInterval(timer);
-      }
-    }, 50);
+    let isDeleting = false;
+    let timeoutId;
 
-    return () => clearInterval(timer);
-  }, []);
+    const handleTyping = () => {
+      let currentText = isDeleting
+        ? fullText.slice(0, index - 1)
+        : fullText.slice(0, index + 1);
+
+      setDisplayText(currentText);
+
+      // টাইপিং বা ডিলিট করার গতি ঠিক করা
+      let speed = isDeleting ? deletingSpeed : typingSpeed;
+
+      if (!isDeleting && currentText === fullText) {
+        // টাইপিং শেষ হলে: ডিলিট শুরু করার জন্য অপেক্ষা
+        speed = delayAfterTyping;
+        isDeleting = true;
+      } else if (isDeleting && currentText === "") {
+        // মোছা শেষ হলে: আবার টাইপিং শুরু
+        isDeleting = false;
+        index = 0;
+        speed = 500; // পুনরায় শুরু করার আগে সামান্য বিরতি
+      }
+
+      // ইনডেক্স আপডেট করা
+      if (isDeleting) {
+        index--;
+      } else {
+        index++;
+      }
+
+      // পরবর্তী কল সেট করা (ইনফিনিটি লুপের জন্য)
+      timeoutId = setTimeout(handleTyping, speed);
+    };
+
+    // প্রথম কলটি শুরু করা
+    timeoutId = setTimeout(handleTyping, 500);
+
+    // কম্পোনেন্ট আনমাউন্ট হলে টাইমার পরিষ্কার করা
+    return () => clearTimeout(timeoutId);
+  }, []); // ডিপেন্ডেন্সি অ্যারে খালি
 
   useEffect(() => {
-    // Rotating circle animation
+    // Rotating circle animation (এটি এমনিতেই Infinity চলছে)
     gsap.to(".rotate-circle", {
       rotation: 360,
       duration: 10,
@@ -44,6 +77,13 @@ export default function HeroSection() {
     }),
   };
 
+  const handleVewResume = (link) => {
+    link && window.open(link, "_blank");
+  };
+
+  const RESUME_DOWNLOAD_LINK =
+    "https://drive.google.com/uc?export=download&id=1D17XNdPgpf5e5obB0ELeqw6HUSoKgTav";
+
   return (
     <section className="w-full py-16 md:py-24">
       <div className="mx-auto flex w-full flex-col items-center justify-between lg:flex-row lg:gap-16">
@@ -56,7 +96,7 @@ export default function HeroSection() {
         >
           <div className="flex flex-col gap-6">
             <motion.div
-              className="text-sm font-medium tracking-wide text-primary/80"
+              className="text-sm font-medium tracking-wide text-accent-green"
               custom={0}
               variants={textVariants}
               initial="hidden"
@@ -65,20 +105,21 @@ export default function HeroSection() {
               WELCOME TO MY WORLD
             </motion.div>
 
-            {/* Typing animation for main heading */}
+            {/* Typing animation for main heading (এখন Infinity চলছে) */}
             <motion.h1
-              className="text-4xl font-black leading-tight text-white sm:text-5xl md:text-6xl min-h-[1.2em]"
+              className="text-4xl font-black h-24 leading-tight text-white sm:text-5xl md:text-6xl min-h-[1.2em]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
               {displayText}
+              {/* পালসিং কারসর, যা Tailwind CSS এর animate-pulse এর কারণে Infinity চলছে */}
               <span className="text-pink-500 animate-pulse">|</span>
             </motion.h1>
 
             {/* Animated subtitle */}
             <motion.h2
-              className="text-xl font-bold text-primary sm:text-2xl"
+              className="text-xl font-bold text-accent-green sm:text-2xl"
               custom={1}
               variants={textVariants}
               initial="hidden"
@@ -118,7 +159,7 @@ export default function HeroSection() {
                 <div className="flex items-center gap-4">
                   <motion.a
                     href="#"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white/60 transition-colors hover:border-primary hover:text-primary"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white/60 transition-colors hover:border-accent-green hover:text-accent-green"
                     whileHover={{ scale: 1.1 }}
                   >
                     <svg
@@ -131,7 +172,7 @@ export default function HeroSection() {
                   </motion.a>
                   <motion.a
                     href="#"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white/60 transition-colors hover:border-primary hover:text-primary"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white/60 transition-colors hover:border-accent-green hover:text-accent-green"
                     whileHover={{ scale: 1.1 }}
                   >
                     <svg
@@ -144,7 +185,7 @@ export default function HeroSection() {
                   </motion.a>
                   <motion.a
                     href="#"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white/60 transition-colors hover:border-primary hover:text-primary"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white/60 transition-colors hover:border-accent-green hover:text-accent-green"
                     whileHover={{ scale: 1.1 }}
                   >
                     <svg
@@ -163,20 +204,27 @@ export default function HeroSection() {
               <motion.button
                 className="inline-block px-8 py-3 font-bold text-white transition-all hover:text-pink-500"
                 whileHover={{ scale: 1.05 }}
+                onClick={() =>
+                  handleVewResume(
+                    "https://drive.google.com/file/d/1D17XNdPgpf5e5obB0ELeqw6HUSoKgTav/view?usp=sharing"
+                  )
+                }
                 whileTap={{ scale: 0.95 }}
               >
                 MY RESUME
               </motion.button>
-              <motion.button
+              <motion.a
+                href={RESUME_DOWNLOAD_LINK}
+                download="Toukir_Ahammed_Resume.pdf"
                 className="inline-block rounded-lg bg-pink-500 px-8 py-3 font-bold text-white transition-all hover:bg-pink-600"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 DOWNLOAD RESUME
-              </motion.button>
+              </motion.a>
               <motion.a
                 href="#contact"
-                className="inline-block px-8 py-3 font-bold text-white transition-all hover:text-primary"
+                className="inline-block px-8 py-3 font-bold text-white transition-all hover:text-pink-500"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -210,7 +258,7 @@ export default function HeroSection() {
 
             {/* Rotating outer circle */}
             <motion.div
-              className="absolute inset-0 rounded-full border-2 border-transparent bg-gradient-to-r from-primary via-pink-500 to-primary bg-clip-border"
+              className="absolute inset-0 rounded-full border-2 border-transparent bg-gradient-to-r from-accent-green via-pink-500 to-accent-green bg-clip-border"
               animate={{ rotate: 360 }}
               transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
               style={{
@@ -220,7 +268,7 @@ export default function HeroSection() {
             />
 
             {/* Image container */}
-            <div className="relative m-1 h-[calc(100%-8px)] w-[calc(100%-8px)] overflow-hidden rounded-full border-2 border-primary/50">
+            <div className="relative m-1 h-[calc(100%-8px)] w-[calc(100%-8px)] overflow-hidden rounded-full border-2 border-accent-green">
               <img
                 src="https://i.ibb.co.com/Kxmh8gD8/FB-IMG-16888629159756489-removebg-preview-2.png"
                 alt="Toukir Ahammed"
@@ -233,7 +281,7 @@ export default function HeroSection() {
             {[...Array(3)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute h-2 w-2 rounded-full bg-primary/60"
+                className="absolute h-2 w-2 rounded-full bg-accent-green"
                 animate={{
                   x: [0, 100 * Math.cos(((i * 360) / 3) * (Math.PI / 180)), 0],
                   y: [0, 100 * Math.sin(((i * 360) / 3) * (Math.PI / 180)), 0],

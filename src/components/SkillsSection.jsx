@@ -56,11 +56,11 @@ const SkillBar = ({ name, percentage }) => {
     >
       <div className="flex items-center justify-between">
         <span className="text-base font-semibold text-white">{name}</span>
-        <span className="text-sm font-medium text-teal-400">{percentage}%</span>
+        <span className="text-sm font-medium text-pink-500">{percentage}%</span>
       </div>
       <div className="h-2 w-full rounded-full bg-white/10">
         <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-teal-400 to-teal-500"
+          className="h-full rounded-full bg-gradient-to-r from-pink-500 to-pink-500"
           initial={{ width: 0 }}
           whileInView={{ width: `${percentage}%` }}
           transition={{ duration: 1, ease: "easeOut" }}
@@ -82,13 +82,13 @@ export default function SkillsSection() {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <div className="inline-block rounded bg-teal-500 px-4 py-2">
+        <div className="inline-block rounded bg-pink-500 px-4 py-2">
           <span className="text-xs font-bold uppercase tracking-wider text-white">
             Professional Skills
           </span>
         </div>
         <h2 className="text-4xl font-black text-white sm:text-5xl md:text-6xl">
-          My Technical <span className="text-teal-400">Expertise</span>.
+          My Technical <span className="text-pink-400">Expertise</span>.
         </h2>
         <p className="max-w-2xl text-base text-white/60 sm:text-lg">
           Proficient in the full MERN stack and modern web tools.
@@ -137,7 +137,7 @@ export default function SkillsSection() {
       >
         {/* Frontend Skills */}
         <div className="flex flex-col gap-8">
-          <h3 className="text-2xl font-bold text-teal-400">Frontend</h3>
+          <h3 className="text-2xl font-bold text-pink-500">Frontend</h3>
           <div className="flex flex-col gap-6">
             {skillBars.Frontend.map((skill, index) => (
               <SkillBar
@@ -151,7 +151,7 @@ export default function SkillsSection() {
 
         {/* Backend & Tools Skills */}
         <div className="flex flex-col gap-8">
-          <h3 className="text-2xl font-bold text-teal-400">Backend & Tools</h3>
+          <h3 className="text-2xl font-bold text-pink-500">Backend & Tools</h3>
           <div className="flex flex-col gap-6">
             {skillBars["Backend & Tools"].map((skill, index) => (
               <SkillBar

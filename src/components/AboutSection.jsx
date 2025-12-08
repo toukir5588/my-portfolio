@@ -4,7 +4,7 @@ export default function AboutSection() {
   return (
     <section className="flex flex-col gap-4" id="about">
       <motion.h2
-        className="text-white text-[28px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 border-b-2 border-primary w-fit"
+        className="text-white text-[28px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 border-b-2 border-pink-500 w-fit"
         initial={{ x: -30, opacity: 0 }}
         whileInView={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -22,9 +22,9 @@ export default function AboutSection() {
           viewport={{ once: true }}
         >
           <img
-            className="rounded-full object-cover size-48 border-4 border-primary/50 hover:border-accent-green transition-colors duration-300"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSFB3LnbQz5tzMRj-IuN11NIJiwvPG0gBaReGqXEgsVw8ZItNgdp-6gWG96UsRDIq3_HwCcH5sFrcrdYrKEyAzTiTOTzEfrj8xPFZvglaZPwR0MdyaRMU9CLIMZQJAHaTmCJq1QDf22m50M0Nwx2rwiraddNdPx_5S7WgVJYamDiiF5Cdv6n0OVzZridyesx6zPejHHjNddnAGxzR_Ov2_xXnq7H-NOiao0NbgElSiL5ePl_Fr_9MJYOIR-upndGL3tBd00t-4lNQp"
-            alt="Professional headshot"
+            className="rounded-full object-cover size-48 border-4 border-accent-green hover:border-pink-500 transition-colors duration-300"
+            src="https://i.ibb.co.com/q3B8W6wc/21937f.jpg"
+            alt="toukir ahammed"
           />
         </motion.div>
 

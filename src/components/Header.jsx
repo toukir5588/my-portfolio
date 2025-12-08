@@ -20,7 +20,7 @@ export default function Header() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="size-5 text-primary">
+        <div className="size-5 text-pink-500">
           <svg
             fill="none"
             viewBox="0 0 48 48"
@@ -48,7 +48,7 @@ export default function Header() {
           {navItems.map((item) => (
             <a
               key={item.label}
-              className="text-white text-sm font-medium leading-normal hover:text-primary transition-colors duration-300"
+              className="text-white text-sm font-medium leading-normal hover:text-pink-500 transition-colors duration-300"
               href={item.href}
             >
               {item.label}
@@ -59,7 +59,7 @@ export default function Header() {
 
       {/* Mobile Menu Button */}
       <motion.button
-        className="sm:hidden text-primary"
+        className="sm:hidden text-accent-green"
         onClick={() => setIsOpen(!isOpen)}
         whileTap={{ scale: 0.95 }}
       >
@@ -69,7 +69,7 @@ export default function Header() {
       {/* Mobile Navigation */}
       {isOpen && (
         <motion.div
-          className="absolute top-16 left-0 right-0 bg-surface-dark border-b border-primary/30 sm:hidden"
+          className="absolute top-16 left-0 right-0 bg-surface-dark border-b border-accent-green sm:hidden"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -78,7 +78,7 @@ export default function Header() {
             {navItems.map((item) => (
               <a
                 key={item.label}
-                className="text-white text-sm font-medium leading-normal hover:text-primary transition-colors"
+                className="text-white text-sm font-medium leading-normal hover:text-pink-500 transition-colors"
                 href={item.href}
                 onClick={() => setIsOpen(false)}
               >

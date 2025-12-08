@@ -23,8 +23,8 @@ export default function Footer() {
         viewport={{ once: true }}
       >
         <motion.a
-          className="text-white hover:text-primary transition-colors text-2xl"
-          href="https://github.com"
+          className="text-white hover:text-accent-green transition-colors text-2xl"
+          href="https://github.com/toukir5588"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.2 }}
@@ -33,8 +33,8 @@ export default function Footer() {
           <FiGithub />
         </motion.a>
         <motion.a
-          className="text-white hover:text-primary transition-colors text-2xl"
-          href="https://linkedin.com"
+          className="text-white hover:text-accent-green transition-colors text-2xl"
+          href="https://www.linkedin.com/in/toukirahammed/"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.2 }}

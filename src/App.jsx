@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import Header from "./components/Header";
@@ -11,10 +11,10 @@ import Footer from "./components/Footer";
 
 function App() {
   useEffect(() => {
-    // GSAP animation for scroll-triggered effects
+    
     gsap.registerPlugin();
 
-    // Animate sections on scroll
+    
     const sections = document.querySelectorAll("section");
     sections.forEach((section) => {
       gsap.from(section, {
@@ -52,8 +52,7 @@ function App() {
           </div>
         </div>
 
-        {/* Todo List Widget */}
-        {/* <TodoList /> */}
+       
       </div>
     </div>
   );

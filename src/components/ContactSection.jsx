@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
+// *** আপনার Formspree URL এখানে বসানো হয়েছে ***
+const FORMSPREE_URL = "https://formspree.io/f/xqarddzg";
+
 export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: "",
@@ -8,6 +11,8 @@ export default function ContactSection() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,17 +24,49 @@ export default function ContactSection() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setFormData({ name: "", email: "", message: "" });
-    setTimeout(() => setSubmitted(false), 3000);
+    setError(null);
+    setIsSubmitting(true);
+
+    // Formspree-তে ডেটা পাঠানোর জন্য fetch ব্যবহার করা হচ্ছে
+    const submitForm = async () => {
+      const data = new FormData(e.target);
+
+      try {
+        const response = await fetch(FORMSPREE_URL, {
+          method: "POST",
+          body: data,
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        if (response.ok) {
+          // সফলভাবে Formspree-তে ডেটা পাঠানো হয়েছে
+          setSubmitted(true);
+          setFormData({ name: "", email: "", message: "" });
+          setTimeout(() => setSubmitted(false), 4000);
+        } else {
+          // Formspree থেকে এরর কোড পেলে
+          setError(
+            "Sorry, there was an issue sending your message. Please check the form data."
+          );
+        }
+      } catch (fetchError) {
+        // নেটওয়ার্ক বা অন্য কোনো সমস্যা হলে
+        setError("A network error occurred. Please try again.");
+        console.error("Network error:", fetchError);
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    submitForm();
   };
 
   return (
-    <section className="flex flex-col gap-4" id="contact">
+    <section className="flex flex-col gap-4 py-16 md:py-24" id="contact">
       <motion.h2
-        className="text-white text-[28px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 border-b-2 border-primary w-fit"
+        className="text-white text-[28px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 border-b-2 border-pink-500 w-fit"
         initial={{ x: -30, opacity: 0 }}
         whileInView={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -60,7 +97,18 @@ export default function ContactSection() {
             </p>
           </motion.div>
         ) : (
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+          <form
+            className="flex flex-col gap-6"
+            action={FORMSPREE_URL} // শুধুমাত্র Fallback হিসেবে
+            method="POST"
+            onSubmit={handleSubmit}
+          >
+            {error && (
+              <div className="bg-red-900/50 border border-red-500 text-red-300 p-3 rounded-md">
+                {error}
+              </div>
+            )}
+
             <motion.div
               className="flex flex-col gap-2"
               initial={{ opacity: 0 }}
@@ -96,9 +144,9 @@ export default function ContactSection() {
               <input
                 className="w-full rounded-md border border-primary/40 bg-background-dark p-3 text-white focus:border-accent-green focus:ring-2 focus:ring-accent-green/50 transition outline-none"
                 id="email"
-                name="email"
+                name="_replyto"
                 type="email"
-                value={formData.email}
+                
                 onChange={handleChange}
                 placeholder="your@email.com"
                 required
@@ -131,12 +179,15 @@ export default function ContactSection() {
             </motion.div>
 
             <motion.button
-              className="flex min-w-[84px] max-w-[240px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-accent-green text-black text-base font-bold leading-normal tracking-[0.015em] transition-all hover:shadow-glow-green"
+              className="flex min-w-[84px] max-w-[240px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-pink-500 text-black text-base font-bold leading-normal tracking-[0.015em] transition-all hover:shadow-[0_0_12px_4px_rgba(236,72,153,0.8)] disabled:opacity-50 disabled:cursor-not-allowed"
               type="submit"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
+              whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
+              disabled={isSubmitting}
             >
-              <span className="truncate">Send Message</span>
+              <span className="truncate">
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </span>
             </motion.button>
           </form>
         )}
